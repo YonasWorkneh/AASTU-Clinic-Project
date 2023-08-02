@@ -9,6 +9,7 @@ struct contact{
 string phoneNum;
 string subCity;
 string city;
+string homeAddress;
 string emergencyContactName;
 string emergencyContactPhone;
 };
@@ -41,7 +42,7 @@ string procedure;
 };
 
 
-//We declared a global variable numOfPatient to use it in multiple places
+//We declared a global variable numOfPatient and numOfApp to use it in multiple places
 
 int numOfPatient=0;
 int numOfApp=0;
@@ -95,6 +96,7 @@ void menu(){
             break;
     case 5: displayAppointments();
             goto label;
+            break;
     case 6: exit(0);
     }
 }
@@ -103,8 +105,8 @@ void getRecord(){
     int currentSize;
     cout<<"\nEnter the number of patient records you want to add:";
     cin>>currentSize;
-    for(int i=numOfPatient;i<(currentSize+numOfPatient);++i){
             cin.ignore();
+    for(int i=numOfPatient;i<(currentSize+numOfPatient);++i){
             cout<<"\nEnter the name of the patient: ";
             getline(cin,patient[i].patient.name);
             cout<<"Enter the birth date of the patient: ";
@@ -124,6 +126,8 @@ void getRecord(){
             getline(cin,patient[i].addressInfo.subCity);
             cout<<"Enter the city where the patient currently lives: ";
             getline(cin,patient[i].addressInfo.city);
+            cout<<"Enter the home address of the patient: ";
+            getline(cin,patient[i].addressInfo.homeAddress);
             cout<<"Enter the name of Emergency contact name: ";
             getline(cin,patient[i].addressInfo.emergencyContactName);
             cout<<"Enter the phone number of Emergency contact:";
@@ -145,17 +149,15 @@ void getRecord(){
 //...the console we can still find the record in the patient.doc file
 void storeRecord(){
 ofstream fout;
-fout.open("Patient.doc");
-        fout<<"\n----AASTU Clinic Patient Record------\n";
+fout.open("PatientRecords.doc");
+        fout<<"\n------AASTU Clinic Patient Records------\n";
 for(int i=0;i<numOfPatient;++i){
-        fout<<"\n\t\t\tDate of Registration:"<<patient[i].dateOfRegistration<<"\n\nName: "<<patient[i].patient.name<<"\tDate of Birth: "
-        <<patient[i].patient.dateOfBirth;
-        fout<<"\nAge: "<<patient[i].patient.age<<"\tSex: "<<patient[i].patient.sex<<"\tHeight: "<<patient[i].patient.height<<"\tWeight: "
-        <<patient[i].patient.weight;
-        fout<<"\nMedical Record Number: "<<patient[i].medicalRecordNum<<"\n\nPatient contact\n\n"<<"Phone Number: "<<patient[i].addressInfo.phoneNum;
-        fout<<"\nSub-city: "<<patient[i].addressInfo.subCity<<"\nCity:"<<patient[i].addressInfo.city<<"\n\nEmergency contact\n\nName: ";
-        fout<<patient[i].addressInfo.emergencyContactName<<"\nPhone Number: "<<patient[i].addressInfo.emergencyContactPhone;
-        fout<<"\n\nGeneral Medical History:\n\n"<<patient[i].medicalHistory<<endl;
+        fout<<"\n\t\t\tDate of Registration: "<<patient[i].dateOfRegistration<<"\n\nName: "<<patient[i].patient.name<<"\tDate of Birth: "
+        <<patient[i].patient.dateOfBirth<<"\nAge: "<<patient[i].patient.age<<"\tSex: "<<patient[i].patient.sex<<"\tHeight: "<<patient[i].patient.height
+        <<"\tWeight: "<<patient[i].patient.weight<<"\nMedical Record Number: "<<patient[i].medicalRecordNum<<"\n\nPatient contact\n\n"<<"Phone Number: "
+        <<patient[i].addressInfo.phoneNum<<"\nSub-city: "<<patient[i].addressInfo.subCity<<"\nCity: "<<patient[i].addressInfo.city<<"\nHome Address: "
+        <<patient[i].addressInfo.homeAddress<<"\n\nEmergency contact\n\nName: "<<patient[i].addressInfo.emergencyContactName<<"\nPhone Number: "
+        <<patient[i].addressInfo.emergencyContactPhone<<"\n\nGeneral Medical History:\n\n"<<patient[i].medicalHistory<<endl;
     }
 fout.close();
 }
@@ -164,20 +166,16 @@ void displayRecord(){
     if(numOfPatient==0)
         cout<<"\nCurrently There are No Patient Records to Display!"<<endl;
         else{
-    cout<<"\n----AASTU Clinic Patient Records------\n";
+    cout<<"\n------AASTU Clinic Patient Records------\n";
     for(int i=0;i<numOfPatient;++i){
-        cout<<"\n\t\t\tDate of Registration:"<<patient[i].dateOfRegistration<<"\n\nName: "<<patient[i].patient.name<<"\tDate of Birth: "
-        <<patient[i].patient.dateOfBirth;
-        cout<<"\nAge: "<<patient[i].patient.age<<"\tSex: "<<patient[i].patient.sex<<"\tHeight: "<<patient[i].patient.height<<"\tWeight: "
-        <<patient[i].patient.weight;
-        cout<<"\nMedical Record Number: "<<patient[i].medicalRecordNum<<"\n\nPatient contact\n\n"<<"Phone Number: "<<patient[i].addressInfo.phoneNum;
-        cout<<"\nSub-city: "<<patient[i].addressInfo.subCity<<"\nCity:"<<patient[i].addressInfo.city<<"\n\nEmergency contact\n\nName: ";
-        cout<<patient[i].addressInfo.emergencyContactName<<"\nPhone Number: "<<patient[i].addressInfo.emergencyContactPhone;
-        cout<<"\n\nGeneral Medical History:\n\n"<<patient[i].medicalHistory<<endl;
+        cout<<"\n\t\t\tDate of Registration: "<<patient[i].dateOfRegistration<<"\n\nName: "<<patient[i].patient.name<<"\tDate of Birth: "
+        <<patient[i].patient.dateOfBirth<<"\nAge: "<<patient[i].patient.age<<"\tSex: "<<patient[i].patient.sex<<"\tHeight: "<<patient[i].patient.height
+        <<"\tWeight: "<<patient[i].patient.weight<<"\nMedical Record Number: "<<patient[i].medicalRecordNum<<"\n\nPatient contact\n\n"<<"Phone Number: "
+        <<patient[i].addressInfo.phoneNum<<"\nSub-city: "<<patient[i].addressInfo.subCity<<"\nCity: "<<patient[i].addressInfo.city<<"\nHome Address: "
+        <<patient[i].addressInfo.homeAddress<<"\n\nEmergency contact\n\nName: "<<patient[i].addressInfo.emergencyContactName<<"\nPhone Number: "
+        <<patient[i].addressInfo.emergencyContactPhone<<"\n\nGeneral Medical History:\n\n"<<patient[i].medicalHistory<<endl;
     }
         }
-
-
 }
 void Search(){
     system("cls");
@@ -196,22 +194,15 @@ void Search(){
             cin.ignore();
             getline(cin,searchKey);
             for(int i=0;i<numOfPatient;++i){
-            if(patient[i].patient.name.rfind(searchKey,0)==0){
-                cout<<"\n----AASTU Clinic Patient Record------\n";
-                cout<<"\n\t\t\tDate of Registration:"<<patient[i].dateOfRegistration<<"\n\nName: "<<patient[i].patient.name<<"\tDate of Birth: "
-                <<patient[i].patient.dateOfBirth;
-                cout<<"\nAge: "<<patient[i].patient.age<<"\tSex: "<<patient[i].patient.sex<<"\tHeight: "<<patient[i].patient.height<<"\tWeight: "
-                <<patient[i].patient.weight;
-                cout<<"\nMedical Record Number: "<<patient[i].medicalRecordNum<<"\n\nPatient contact\n\n"<<"Phone Number: "
-                <<patient[i].addressInfo.phoneNum;
-                cout<<"\nSub-city: "<<patient[i].addressInfo.subCity<<"\nCity:"<<patient[i].addressInfo.city<<"\n\nEmergency contact\n\nName: ";
-                cout<<patient[i].addressInfo.emergencyContactName<<"\nPhone Number: "<<patient[i].addressInfo.emergencyContactPhone;
-                cout<<"\n\nGeneral Medical History:\n\n"<<patient[i].medicalHistory<<endl;
+                if(patient[i].patient.name.rfind(searchKey,0)==0){
+                    cout<<"\n------AASTU Clinic Patient Record------\n";
+                    cout<<"\n\t\t\tDate of Registration: "<<patient[i].dateOfRegistration<<"\n\nName: "<<patient[i].patient.name<<"\tDate of Birth: "
+                    <<patient[i].patient.dateOfBirth<<"\nAge: "<<patient[i].patient.age<<"\tSex: "<<patient[i].patient.sex<<"\tHeight: "<<patient[i].patient.height
+                    <<"\tWeight: "<<patient[i].patient.weight<<"\nMedical Record Number: "<<patient[i].medicalRecordNum<<"\n\nPatient contact\n\n"<<"Phone Number: "
+                    <<patient[i].addressInfo.phoneNum<<"\nSub-city: "<<patient[i].addressInfo.subCity<<"\nCity: "<<patient[i].addressInfo.city<<"\nHome Address: "
+                    <<patient[i].addressInfo.homeAddress<<"\n\nEmergency contact\n\nName: "<<patient[i].addressInfo.emergencyContactName<<"\nPhone Number: "
+                    <<patient[i].addressInfo.emergencyContactPhone<<"\n\nGeneral Medical History:\n\n"<<patient[i].medicalHistory<<endl;
                 }
-             else{
-                    cout<<"Sorry! There is no Patient Record with that Name."<<endl;
-                    goto choice;
-             }
             }
             break;
     }
@@ -222,21 +213,13 @@ void Search(){
             getline(cin,Key);
             for(int i=0;i<numOfPatient;++i){
                 if(patient[i].medicalRecordNum.rfind(Key,0)==0){
-                  cout<<"\n----AASTU Clinic Patient Record------\n";
-                  cout<<"\n\t\t\tDate of Registration:"<<patient[i].dateOfRegistration<<"\n\nName: "<<patient[i].patient.name<<"\tDate of Birth: "
-                  <<patient[i].patient.dateOfBirth;
-                  cout<<"\nAge: "<<patient[i].patient.age<<"\tSex: "<<patient[i].patient.sex<<"\tHeight: "<<patient[i].patient.height<<"\tWeight: "
-                  <<patient[i].patient.weight;
-                  cout<<"\nMedical Record Number: "<<patient[i].medicalRecordNum<<"\n\nPatient contact\n\n"<<"Phone Number: "
-                  <<patient[i].addressInfo.phoneNum;
-                  cout<<"\nSub-city: "<<patient[i].addressInfo.subCity<<"\nCity:"<<patient[i].addressInfo.city<<"\n\nEmergency contact\n\nName: ";
-                  cout<<patient[i].addressInfo.emergencyContactName<<"\nPhone Number: "<<patient[i].addressInfo.emergencyContactPhone;
-                  cout<<"\n\nGeneral Medical History:\n\n"<<patient[i].medicalHistory<<endl;
-                }
-                else{
-                    cout<<"Sorry! There is no Patient Record with this Medical Record Number."<<endl;
-                    goto choice;
-
+                    cout<<"\n------AASTU Clinic Patient Record------\n";
+                    cout<<"\n\t\t\tDate of Registration: "<<patient[i].dateOfRegistration<<"\n\nName: "<<patient[i].patient.name<<"\tDate of Birth: "
+                    <<patient[i].patient.dateOfBirth<<"\nAge: "<<patient[i].patient.age<<"\tSex: "<<patient[i].patient.sex<<"\tHeight: "<<patient[i].patient.height
+                    <<"\tWeight: "<<patient[i].patient.weight<<"\nMedical Record Number: "<<patient[i].medicalRecordNum<<"\n\nPatient contact\n\n"<<"Phone Number: "
+                    <<patient[i].addressInfo.phoneNum<<"\nSub-city: "<<patient[i].addressInfo.subCity<<"\nCity: "<<patient[i].addressInfo.city<<"\nHome Address: "
+                    <<patient[i].addressInfo.homeAddress<<"\n\nEmergency contact\n\nName: "<<patient[i].addressInfo.emergencyContactName<<"\nPhone Number: "
+                    <<patient[i].addressInfo.emergencyContactPhone<<"\n\nGeneral Medical History:\n\n"<<patient[i].medicalHistory<<endl;
                 }
             }
             break;
@@ -254,8 +237,8 @@ void setAppointment(){
     int currentSize;
 cout<<"How many appointments do you want to add:";
 cin>>currentSize;
-for(int i=numOfApp;i<(numOfApp+currentSize);++i){
             cin.ignore();
+for(int i=numOfApp;i<(numOfApp+currentSize);++i){
             cout<<"\nEnter the name of the patient: ";
             getline(cin,meeting[i].patient.name);
             cout<<"Enter the birth date of the patient: ";
@@ -275,6 +258,8 @@ for(int i=numOfApp;i<(numOfApp+currentSize);++i){
             getline(cin,meeting[i].addressOf.subCity);
             cout<<"Enter the city where the patient currently lives: ";
             getline(cin,meeting[i].addressOf.city);
+            cout<<"Enter the home address of the patient: ";
+            getline(cin,meeting[i].addressOf.homeAddress);
             cout<<"Enter the medical number of the patient:";
             getline(cin,meeting[i].medicalRecordNum);
             cout<<"Enter the department the appointment is intended for:";
@@ -285,6 +270,7 @@ for(int i=numOfApp;i<(numOfApp+currentSize);++i){
             getline(cin,meeting[i].appointmentDate);
             cout<<"Enter the time of the appointment:";
             getline(cin,meeting[i].appointmentTime);
+            system("cls");
 
 }
 numOfApp+=currentSize;
@@ -292,15 +278,15 @@ storeAppointment();
 }
 void storeAppointment(){
 ofstream fout;
-fout.open("Patient Appointment.doc");
+fout.open("Patient Appointments.doc");
 fout<<"---------Available Appointments--------\n";
 for(int i=0;i<numOfApp;++i){
-     fout<<"\n\t\t\tDate of appointment:"<<meeting[i].appointmentDate<<"\nAppointment Time:"<<meeting[i].appointmentTime<<"\n\nName: "
+     fout<<"\n\t\t\tDate of appointment: "<<meeting[i].appointmentDate<<"\n\t\t\tAppointment Time: "<<meeting[i].appointmentTime<<"\n\nName: "
         <<meeting[i].patient.name<<"\tDate of Birth: "<<meeting[i].patient.dateOfBirth<<"\nAge: "<<meeting[i].patient.age<<"\tSex: "
         <<meeting[i].patient.sex<<"\tHeight: "<<meeting[i].patient.height<<"\tWeight: "<<meeting[i].patient.weight
         <<"\nMedical Record Number: "<<meeting[i].medicalRecordNum<<"\n\nPatient contact\n\n"<<"Phone Number: "<<meeting[i].addressOf.phoneNum
-        <<"\nSub-city: "<<meeting[i].addressOf.subCity<<"\nCity:"<<meeting[i].addressOf.city<<"\nDepartment: "<<meeting[i].department
-        <<"\nProcedure: "<<meeting[i].procedure<<endl;
+        <<"\nSub-city: "<<meeting[i].addressOf.subCity<<"\nCity: "<<meeting[i].addressOf.city<<"\nHome Address: "<<meeting[i].addressOf.homeAddress
+        <<"\n\nDepartment: "<<meeting[i].department<<"\nProcedure: "<<meeting[i].procedure<<endl;
 }
 
 }
@@ -311,12 +297,12 @@ void displayAppointments(){
     else{
             cout<<"\n----Available Appointments-------\n";
     for(int i=0;i<numOfApp;++i){
-        cout<<"\n\t\t\tDate of appointment:"<<meeting[i].appointmentDate<<"\nAppointment Time:"<<meeting[i].appointmentTime<<"\n\nName: "
+        cout<<"\n\t\t\tDate of appointment:"<<meeting[i].appointmentDate<<"\n\t\t\tAppointment Time:"<<meeting[i].appointmentTime<<"\n\nName: "
         <<meeting[i].patient.name<<"\tDate of Birth: "<<meeting[i].patient.dateOfBirth<<"\nAge: "<<meeting[i].patient.age<<"\tSex: "
         <<meeting[i].patient.sex<<"\tHeight: "<<meeting[i].patient.height<<"\tWeight: "<<meeting[i].patient.weight
         <<"\nMedical Record Number: "<<meeting[i].medicalRecordNum<<"\n\nPatient contact\n\n"<<"Phone Number: "<<meeting[i].addressOf.phoneNum
-        <<"\nSub-city: "<<meeting[i].addressOf.subCity<<"\nCity:"<<meeting[i].addressOf.city<<"\nDepartment: "<<meeting[i].department
-        <<"\nProcedure: "<<meeting[i].procedure<<endl;
+        <<"\nSub-city: "<<meeting[i].addressOf.subCity<<"\nCity:"<<meeting[i].addressOf.city<<"\nHome Address: "<<meeting[i].addressOf.homeAddress
+        <<"\n\nDepartment: "<<meeting[i].department<<"\nProcedure: "<<meeting[i].procedure<<endl;
     }
 
     }
