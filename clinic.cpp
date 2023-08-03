@@ -149,7 +149,7 @@ void getRecord(){
 //...the console we can still find the record in the patient.doc file
 void storeRecord(){
 ofstream fout;
-fout.open("PatientRecords.doc");
+fout.open("PatientRecords.doc"ios::app);//this way it will not override the data that was already there in the first place.
         fout<<"\n------AASTU Clinic Patient Records------\n";
 for(int i=0;i<numOfPatient;++i){
         fout<<"\n\t\t\tDate of Registration: "<<patient[i].dateOfRegistration<<"\n\nName: "<<patient[i].patient.name<<"\tDate of Birth: "
@@ -278,7 +278,7 @@ storeAppointment();
 }
 void storeAppointment(){
 ofstream fout;
-fout.open("Patient Appointments.doc");
+fout.open("Patient Appointments.doc":ios::app);//by including ios::app it will only update not totally discard the previous data.
 fout<<"---------Available Appointments--------\n";
 for(int i=0;i<numOfApp;++i){
      fout<<"\n\t\t\tDate of appointment: "<<meeting[i].appointmentDate<<"\n\t\t\tAppointment Time: "<<meeting[i].appointmentTime<<"\n\nName: "
@@ -307,4 +307,3 @@ void displayAppointments(){
 
     }
 }
-
