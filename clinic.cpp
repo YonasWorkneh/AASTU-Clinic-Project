@@ -41,7 +41,7 @@ struct appointmentRequest {
     string department;
     string procedure;
 };
-struct stuffrecord {
+struct stuffRecord {
     string name;
     string age;
     string profession;
