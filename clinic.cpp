@@ -1,8 +1,8 @@
 #include <iostream>
 #include <stdlib.h>
-#include <string.h>
 #include <fstream>
 #include <string>
+
 using namespace std;
 
 //since contacts have its own details we chose to define another structure
@@ -70,7 +70,8 @@ int numofstuff = 0;
 medicalRecord patient[10000];
 appointmentRequest meeting[10000];
 
-//None of the functions has parameters as the author of the famous book "Clean Code" Robert Cecil says "The best functions are those without Parameters."
+/*we try to avoid at least minimize the  parameters for our functions as the author of the famous book "Clean Code" Robert Cecil says
+"The best functions are those without Parameters."*/
 void menu();
 void getRecord();
 void Search();
@@ -79,8 +80,9 @@ void setAppointment();
 void displayAppointments();
 void storeRecord();
 void storeAppointment();
-void getstuffRecord();
-void displaystuff();
+void getStuffRecord();
+void storeStuffRecord(int a);
+void displayStuffRecord();
 
 int main() {
 
@@ -93,24 +95,18 @@ int main() {
 
 //this function is the only function we are going to call in the main functions so using switch we are going to call the other functions
 //...inside this function
-
-
-
-
-
 void menu() {
     int choice;
     int n;
-
-    loop:
     while (true) {
-    cout << "\n----AASTU Student Clinic Menu----\n\n 1.Enter 1 if you are a patient\n 2.Enter 2 if you are a staff member\n3.enter 0 to exit from the program";
+    cout << "\n----AASTU Student Clinic Menu----\n\n 1.Enter 1 if you are a patient\n 2.Enter 2 if you are a staff member\n 3.enter 0 to exit from the program";
     cout << "\nEnter your choice: ";
         cin >> choice;
 
 
         if (choice == 1) {
             cout << "1. Add patient record.\n2. Set appointment.\nEnter 1 or 2: ";
+            label:
             cin >> n;
 
             if (n == 1) {
@@ -119,6 +115,7 @@ void menu() {
                 setAppointment();
             } else {
                 cout << "Invalid input. Please try again: ";
+                goto label;
             }
 
             break; // Exit the loop after processing the choice.
@@ -128,7 +125,9 @@ void menu() {
             cin>>pass;
             if(pass=="openinfo1234"){
             int z;
+            loop:
             cout << "1. Display patient records\n2. Search patient record\n3. Display appointments\n4. Add new staff member information\n5. Display staff members info\n6. Exit\nEnter 1, 2, 3, 4, 5, or 6: ";
+            choicee:
             cin >> z;
 
             switch (z) {
@@ -145,17 +144,18 @@ void menu() {
                     goto loop;
                     break;
                 case 4:
-                    getstuffRecord();
+                    getStuffRecord();
                     goto loop;
                     break;
                 case 5:
-                    displaystuff();
+                    displayStuffRecord();
                     goto loop;
                     break;
                 case 6:
                     exit(0);
                 default:
                     cout << "Invalid input. Please try again: ";
+                    goto choicee;
             }
 
             }
@@ -171,38 +171,6 @@ void menu() {
         }
 
     }
-}
-void storestuffrecord(int a) {
-    ofstream fout("Stuffrecords.doc", ios::app);
-    if (!fout.is_open()) {
-        cout << "Error opening the file.";
-        return;
-    }
-
-    fout << "\n------AASTU Clinic Staff Member Records------\n";
-    for (int i = numofstuff - a; i < numofstuff; ++i) { // Write all the new records added
-        fout << "\n\t\t\tName of staff member: " << stuff[i].name << "\n\t\t\tAge: "
-            << stuff[i].age << "\n\t\t\tProfession: " << stuff[i].profession << "\n\t\t\tSpecialization: " << stuff[i].specialization << "\n\t\t\tDate of Registration: " << stuff[i].dateofregistration
-            << "\n\t\t\tPhone number: " << stuff[i].phoneNum << "\n\t\t\tSubcity: " << stuff[i].subCity << "\n\t\t\tCity: " << stuff[i].city << "\n\t\t\tHome address: " << stuff[i].homeAddress
-            << "\n\t\t\tExperience: " << stuff[i].experience << "\n\t\t\tEmergency contact name: " << stuff[i].emergencyContactName << "\n\t\t\tEmergency contact phone: " << stuff[i].emergencyContactPhone << endl;
-    }
-
-    fout.close();
-}
-void displaystuff() {
-    ifstream myfile("stuffrecords.doc");
-    if (!myfile.is_open()) {
-        cout << "Error opening the file.";
-        return;
-    }
-
-    cout << "\n------AASTU Clinic Staff Member Records------\n";
-    string line;
-    while (getline(myfile, line)) {
-        cout << line << endl;
-    }
-
-    myfile.close();
 }
 
 void getRecord() {
@@ -254,15 +222,15 @@ void getRecord() {
 //...the console we can still find the record in the patient.doc file
 void storeRecord() {
     ofstream fout;
-    fout.open("PatientRecords.doc", ios::app); // Open the file in append mode
+    fout.open("patientRecords.doc", ios::app); // Open the file in append mode
 
     if (!fout.is_open()) {
         cout << "Error opening the file.";
         return;
     }
 
-    fout << "\n------AASTU Clinic Patient Records------\n";
-    for (int i = numOfPatient - 1; i < numOfPatient; ++i) { // Only write the latest record
+    fout << "\n------AASTU Clinic Patient Record------\n";
+    for (int i = 0; i < numOfPatient; ++i) { // Only write the latest record
         fout << "\n\t\t\tDate of Registration: " << patient[i].dateOfRegistration << "\n\nName: " << patient[i].patient.name << "\tDate of Birth: "
             << patient[i].patient.dateOfBirth << "\nAge: " << patient[i].patient.age << "\tSex: " << patient[i].patient.sex << "\tHeight: " << patient[i].patient.height
             << "\tWeight: " << patient[i].patient.weight << "\nMedical Record Number: " << patient[i].medicalRecordNum << "\n\nPatient contact\n\n" << "Phone Number: "
@@ -275,13 +243,12 @@ void storeRecord() {
 
 
 void displayRecord() {
-    ifstream fin("PatientRecords.doc");
+    system("cls");
+    ifstream fin("patientRecords.doc");
     if (!fin.is_open()) {
-        cout << "Error opening the file.\n";
+        cout << "\nCurrently there are no Patient records!\n";
         return;
     }
-
-    cout << "\n------AASTU Clinic Patient Records------\n";
     string line;
     while (getline(fin, line)) {
         cout << line << endl;
@@ -299,24 +266,17 @@ void Search() {
     cout << "How do you want to search: ";
     cin >> searchChoice;
 
-    if (numOfPatient == 12) {
+    ifstream fin("patientRecords.doc");
+    if (!fin.is_open()) {
         cout << "Currently, There are No Patient Records to Search from!\n";
         return;
     }
-
     cin.ignore();
     cout << "Enter the Search Key: ";
     getline(cin, searchKey);
-
-    ifstream fin("PatientRecords.doc");
-    if (!fin.is_open()) {
-        cout << "Error opening the file.\n";
-        return;
-    }
-
     bool found = false;
     string line;
-    while (getline(fin, line)) {
+   while (getline(fin, line)) {
         if (line.find(searchKey) != string::npos) {
             found = true;
             cout << "\n------AASTU Clinic Patient Record------\n";
@@ -383,7 +343,7 @@ void setAppointment() {
 }
 void storeAppointment() {
     ofstream fout;
-    fout.open("PatientAppointments.doc", ios::app); // Open the file in append mode
+    fout.open("patientAppointments.doc", ios::app); // Open the file in append mode
 
     if (!fout.is_open()) {
         cout << "Error opening the file.";
@@ -391,7 +351,7 @@ void storeAppointment() {
     }
 
     fout << "---------Available Appointments--------\n";
-    for (int i = numOfApp - 1; i < numOfApp; ++i) { // Only write the latest appointment
+    for (int i = 0; i < numOfApp; ++i) { // Only write the latest appointment
         fout << "\n\t\t\tDate of appointment: " << meeting[i].appointmentDate << "\n\t\t\tAppointment Time: " << meeting[i].appointmentTime << "\n\nName: "
             << meeting[i].patient.name << "\tDate of Birth: " << meeting[i].patient.dateOfBirth << "\nAge: " << meeting[i].patient.age << "\tSex: "
             << meeting[i].patient.sex << "\tHeight: " << meeting[i].patient.height << "\tWeight: " << meeting[i].patient.weight
@@ -403,9 +363,10 @@ void storeAppointment() {
 }
 
 void displayAppointments() {
-    ifstream fin("PatientAppointments.doc");
+    system("cls");
+    ifstream fin("patientAppointments.doc");
     if (!fin.is_open()) {
-        cout << "Error opening the file.\n";
+        cout << "There are no available appointments.\n";
         return;
     }
 
@@ -417,9 +378,7 @@ void displayAppointments() {
 
     fin.close();
 }
-
-
-void getstuffRecord() {
+void getStuffRecord() {
     system("cls");
     int sizee;
     cout << "\nEnter the number of staff member records you want to add: ";
@@ -456,6 +415,37 @@ void getstuffRecord() {
     }
 
     numofstuff += sizee;
-    storestuffrecord(sizee);
+    storeStuffRecord(sizee);
 }
 
+void storeStuffRecord(int a) {
+    ofstream fout("stuffRecords.doc", ios::app);
+    if (!fout.is_open()) {
+        cout << "Error opening the file.";
+        return;
+    }
+
+    fout << "\n------AASTU Clinic Staff Member Records------\n";
+    for (int i = numofstuff - a; i < numofstuff; ++i) { // Write all the new records added
+        fout<< "\n\t\t\tName of staff member: " << stuff[i].name << "\n\t\t\tAge: "
+            << stuff[i].age << "\n\t\t\tProfession: " << stuff[i].profession << "\n\t\t\tSpecialization: " << stuff[i].specialization << "\n\t\t\tDate of Registration: " << stuff[i].dateofregistration
+            << "\n\t\t\tPhone number: " << stuff[i].phoneNum << "\n\t\t\tSubcity: " << stuff[i].subCity << "\n\t\t\tCity: " << stuff[i].city << "\n\t\t\tHome address: " << stuff[i].homeAddress
+            << "\n\t\t\tExperience: " << stuff[i].experience << "\n\t\t\tEmergency contact name: " << stuff[i].emergencyContactName << "\n\t\t\tEmergency contact phone: " << stuff[i].emergencyContactPhone << endl;
+    }
+
+    fout.close();
+}
+void displayStuffRecord() {
+    system("cls");
+    ifstream myfile("stuffRecords.doc");
+    if (!myfile.is_open()) {
+        cout << "Currently there is no record of stuff members.";
+        return;
+    }
+    string line;
+    while (getline(myfile, line)) {
+        cout << line << endl;
+    }
+
+    myfile.close();
+}
