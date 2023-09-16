@@ -116,7 +116,7 @@ void menu() {
                 goto patientChoice;
             } else if (n == 2) {
                 setAppointment();
-                goto pateintChoice;
+                goto patientChoice;
             } else if(n == 3){
                 goto backToMenu;
             }
