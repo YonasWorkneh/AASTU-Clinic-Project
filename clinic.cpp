@@ -99,21 +99,28 @@ void menu() {
     int choice;
     int n;
     while (true) {
+    backToMenu:
     cout << "\n----AASTU Student Clinic Menu----\n\n 1.Enter 1 if you are a patient\n 2.Enter 2 if you are a staff member\n 3.enter 0 to exit from the program";
     cout << "\nEnter your choice: ";
         cin >> choice;
 
 
         if (choice == 1) {
-            cout << "1. Add patient record.\n2. Set appointment.\nEnter 1 or 2: ";
+            patientChoice:
+            cout << "1. Add patient record.\n2. Set appointment.\n3.Back to main menu\nEnter 1, 2 or 3 : ";
             label:
             cin >> n;
 
             if (n == 1) {
                 getRecord();
+                goto patientChoice;
             } else if (n == 2) {
                 setAppointment();
-            } else {
+                goto pateintChoice;
+            } else if(n == 3){
+                goto backToMenu;
+            }
+            else {
                 cout << "Invalid input. Please try again: ";
                 goto label;
             }
